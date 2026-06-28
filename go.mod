@@ -1,6 +1,6 @@
 module github.com/ha1377311454/sterm
 
-go 1.21
+go 1.25
 
 require (
 	github.com/gdamore/tcell/v2 v2.7.4

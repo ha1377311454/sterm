@@ -27,6 +27,31 @@ func TestHostFilterUsesSubstringMatch(t *testing.T) {
 	}
 }
 
+func TestFilterInputDoesNotTriggerGlobalShortcuts(t *testing.T) {
+	app := newDeleteTestApp(t)
+	app.hostList.activateFilter()
+
+	if !app.hostList.isFilterFocused() {
+		t.Fatal("expected filter to have focus")
+	}
+
+	for _, r := range []rune{'q', 't'} {
+		event := app.onGlobalKey(tcell.NewEventKey(tcell.KeyRune, r, tcell.ModNone))
+		if event == nil {
+			t.Fatalf("expected %q to pass through while filter is focused", r)
+		}
+	}
+
+	app.tv.SetFocus(app.hostList.table)
+	if app.hostList.isFilterFocused() {
+		t.Fatal("expected table focus after switching")
+	}
+
+	if event := app.onGlobalKey(tcell.NewEventKey(tcell.KeyRune, 'q', tcell.ModNone)); event != nil {
+		t.Fatal("expected q to be consumed when filter is not focused")
+	}
+}
+
 func TestDeleteConfirmEnterDeletesHost(t *testing.T) {
 	app := newDeleteTestApp(t)
 	hl := app.hostList

@@ -1,7 +1,7 @@
 # sterm
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?logo=go&logoColor=white)](go.mod)
+[![Go Version](https://img.shields.io/badge/Go-1.25+-00ADD8?logo=go&logoColor=white)](go.mod)
 
 **English** | A terminal SSH connection manager with SFTP file transfer, encrypted password storage, and customizable themes.
 
@@ -26,9 +26,9 @@
 
 ### Host list / 主机列表
 
-Teal theme / Teal 主题：
+Solarized Dark theme / Solarized Dark 主题：
 
-![Host list — teal theme](docs/screenshots/hosts-teal.png)
+![Host list — solarized theme](docs/screenshots/hosts-solarized.png)
 
 Catppuccin theme / Catppuccin 主题：
 
@@ -36,7 +36,7 @@ Catppuccin theme / Catppuccin 主题：
 
 ### Add / edit host / 添加与编辑主机
 
-![Add host form](docs/screenshots/add-host.png)
+![Edit host form](docs/screenshots/edit-host.png)
 
 ### Theme selector / 主题选择
 
@@ -159,7 +159,11 @@ Passwords are encrypted with AES-GCM before being written to disk.
 
 ### Built-in themes / 内置主题
 
-`default`, `teal`, `nord`, `dracula`, `monokai`, `catppuccin`
+`default`, `solarized`, `nord`, `dracula`, `monokai`, `catppuccin`
+
+> `teal` is kept as an alias for `solarized` in existing configs.
+>
+> 旧配置中的 `teal` 仍可作为 `solarized` 的别名使用。
 
 Place custom `*.yaml` skin files in the config `skins/` directory or pass `--theme-dir`.
 

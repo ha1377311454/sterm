@@ -150,6 +150,12 @@ func (a *App) onGlobalKey(event *tcell.EventKey) *tcell.EventKey {
 	if front != "hostlist" {
 		return event
 	}
+
+	// 筛选栏输入时不过滤快捷键，避免关键词中的 t/q 触发主题切换或退出。
+	if a.hostList.isFilterFocused() {
+		return event
+	}
+
 	switch event.Key() {
 	case tcell.KeyCtrlC:
 		a.tv.Stop()

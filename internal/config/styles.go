@@ -103,8 +103,8 @@ func (s *Styles) Load(name string) error {
 		s.skin = defaultSkin()
 		return nil
 	}
-	if name == "teal" {
-		s.skin = tealSkin()
+	if name == "solarized" || name == "teal" {
+		s.skin = solarizedSkin()
 		return nil
 	}
 	if data, ok := readBuiltinSkin(name); ok {
@@ -246,38 +246,38 @@ func defaultSkin() *Skin {
 	}
 }
 
-func tealSkin() *Skin {
+func solarizedSkin() *Skin {
 	return &Skin{
-		Body: BodyStyle{FgColor: "#b8d8d9", BgColor: "#00464d"},
+		Body: BodyStyle{FgColor: "#839496", BgColor: "#002b36"},
 		Frame: FrameStyle{
-			Border: BorderStyle{FgColor: "#4fd9e6", FocusColor: "#66e7f0"},
-			Title:  TitleStyle{FgColor: "#b980ff"},
+			Border: BorderStyle{FgColor: "#073642", FocusColor: "#2aa198"},
+			Title:  TitleStyle{FgColor: "#268bd2"},
 		},
 		Table: TableStyle{
-			FgColor:       "#4fd9e6",
-			BgColor:       "#00464d",
-			CursorFgColor: "#00363b",
-			CursorBgColor: "#55d7df",
-			Header:        HeaderStyle{FgColor: "#66e7f0", BgColor: "#003b42"},
+			FgColor:       "#839496",
+			BgColor:       "#002b36",
+			CursorFgColor: "#002b36",
+			CursorBgColor: "#2aa198",
+			Header:        HeaderStyle{FgColor: "#268bd2", BgColor: "#002b36"},
 		},
 		Prompt: PromptStyle{
-			FgColor:     "#d8f3f4",
-			BgColor:     "#003b42",
-			FilterColor: "#ffc04d",
+			FgColor:     "#93a1a1",
+			BgColor:     "#073642",
+			FilterColor: "#b58900",
 		},
 		Status: StatusStyle{
-			FgColor:  "#76aeb5",
-			BgColor:  "#00464d",
-			OkColor:  "#7ee787",
-			ErrColor: "#ff5f5f",
+			FgColor:  "#586e75",
+			BgColor:  "#002b36",
+			OkColor:  "#859900",
+			ErrColor: "#dc322f",
 		},
 		Form: FormStyle{
-			FgColor:       "#d8f3f4",
-			BgColor:       "#00464d",
-			FieldFgColor:  "#ecfeff",
-			FieldBgColor:  "#00464d",
-			ButtonFgColor: "#00363b",
-			ButtonBgColor: "#ffc04d",
+			FgColor:       "#839496",
+			BgColor:       "#002b36",
+			FieldFgColor:  "#eee8d5",
+			FieldBgColor:  "#002b36",
+			ButtonFgColor: "#002b36",
+			ButtonBgColor: "#268bd2",
 		},
 	}
 }

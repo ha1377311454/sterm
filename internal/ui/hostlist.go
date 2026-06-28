@@ -113,6 +113,10 @@ func (hl *HostList) activateFilter() {
 	hl.app.tv.SetFocus(hl.filter)
 }
 
+func (hl *HostList) isFilterFocused() bool {
+	return hl.filter.HasFocus()
+}
+
 func (hl *HostList) clearFilter() {
 	hl.query = ""
 	hl.filter.SetText("")
