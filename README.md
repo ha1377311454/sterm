@@ -61,6 +61,20 @@ make build
 ./sterm
 ```
 
+### Homebrew
+
+```bash
+brew install ha1377311454/tap/sterm
+```
+
+首次安装需先 tap（一行命令已包含 tap 路径，通常无需单独执行 `brew tap`）。
+
+升级：
+
+```bash
+brew upgrade sterm
+```
+
 ### Go install / Go 安装
 
 ```bash

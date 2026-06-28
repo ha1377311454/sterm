@@ -12,9 +12,10 @@ import (
 var runtimeOptions config.Options
 
 var rootCmd = &cobra.Command{
-	Use:   "sterm",
-	Short: "SSH connection manager with file transfer",
-	Long:  "sterm — a terminal SSH manager with SFTP support and customizable themes",
+	Use:     "sterm",
+	Short:   "SSH connection manager with file transfer",
+	Long:    "sterm — a terminal SSH manager with SFTP support and customizable themes",
+	Version: Version,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		app, err := ui.NewAppWithOptions(runtimeOptions)
 		if err != nil {
