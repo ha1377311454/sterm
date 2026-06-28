@@ -2,6 +2,8 @@ package ui
 
 import (
 	"fmt"
+	"strings"
+	"time"
 
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
@@ -25,6 +27,7 @@ type App struct {
 	cmdBar    *tview.TextView
 	rootFlex  *tview.Flex
 	options   config.Options
+	statusSeq int // 用于忽略过期的自动清除
 }
 
 // NewApp 创建并组装完整 TUI。
@@ -174,7 +177,10 @@ func (a *App) onGlobalKey(event *tcell.EventKey) *tcell.EventKey {
 }
 
 // SetStatus 在状态栏显示消息（成功为绿色，错误为红色）。
+// 错误消息会在数秒后自动清除；进行中的提示（以 … 结尾）不会自动清除。
 func (a *App) SetStatus(msg string, isErr bool) {
+	a.statusSeq++
+	seq := a.statusSeq
 	go a.tv.QueueUpdateDraw(func() {
 		col := a.styles.Status().OkColor
 		if isErr {
@@ -182,10 +188,31 @@ func (a *App) SetStatus(msg string, isErr bool) {
 		}
 		a.statusBar.SetText(fmt.Sprintf("[%s]%s[-]", col, msg))
 	})
+	if isErr && !isProgressStatus(msg) {
+		go a.autoClearStatus(seq, 5*time.Second)
+	}
+}
+
+func isProgressStatus(msg string) bool {
+	return strings.HasSuffix(msg, "…") || strings.HasSuffix(msg, "...")
+}
+
+func (a *App) autoClearStatus(seq int, after time.Duration) {
+	time.Sleep(after)
+	a.clearStatusIfSeq(seq)
+}
+
+func (a *App) clearStatusIfSeq(seq int) {
+	go a.tv.QueueUpdateDraw(func() {
+		if a.statusSeq == seq {
+			a.statusBar.SetText("")
+		}
+	})
 }
 
 // ClearStatus 清除状态栏消息。
 func (a *App) ClearStatus() {
+	a.statusSeq++
 	go a.tv.QueueUpdateDraw(func() {
 		a.statusBar.SetText("")
 	})
@@ -203,6 +230,7 @@ func (a *App) Connect(idx int) {
 		KeyPath: h.KeyPath,
 	}
 	var connErr error
+	a.ClearStatus()
 	a.tv.Suspend(func() {
 		connErr = ssh.Connect(opts)
 	})
@@ -222,6 +250,7 @@ func (a *App) OpenSFTP(idx int) {
 		User: h.User, Password: h.Password,
 		KeyPath: h.KeyPath,
 	}
+	a.ClearStatus()
 	a.SetStatus(fmt.Sprintf("Connecting SFTP to %s…", h.Host), false)
 	go func() {
 		sc, err := ssh.NewSFTPClient(opts)
