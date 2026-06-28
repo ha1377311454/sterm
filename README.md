@@ -162,6 +162,53 @@ go install github.com/ha1377311454/sterm@latest
 make release   # outputs to dist/
 ```
 
+### Windows / Windows 安装
+
+从 [Releases](https://github.com/ha1377311454/sterm/releases) 下载 `sterm_windows_amd64.exe`（或 ARM64 版本），在 **Windows Terminal** 中运行（不推荐老版 cmd）。
+
+配置目录：`%APPDATA%\sterm\`
+
+---
+
+## Platform support / 平台支持
+
+### macOS & Linux — 主要支持平台
+
+作者日常以 **macOS + Linux** 为主力环境，sterm 的开发、测试和文档也主要围绕 iTerm2、Terminal.app 及常见 Linux 终端进行。**这两个平台上的体验最完整、最稳定。**
+
+### Windows — 基本可用，尚未细致适配
+
+sterm 提供 Windows 构建产物，核心功能（主机管理、SSH、SFTP、加密配置）可以运行，但**作者本人不是 Windows 重度用户，目前未对 Windows 场景做深入适配和长期验证**。如果你在 Windows 上遇到问题，属于预期之内，而非个例。
+
+**已知局限：**
+
+| 问题 | 说明 |
+|------|------|
+| 依赖终端应用 | sterm 是 TUI，必须在 Windows Terminal 等现代终端里运行，无法像独立 App 那样单独开窗口 |
+| SSH 窗口缩放 | 连接 SSH 后调整终端窗口大小，远程 Shell **不会**同步更新尺寸（Windows 无 SIGWINCH，暂未实现） |
+| 密钥格式 | 仅支持 **OpenSSH** 私钥，**不支持 PuTTY `.ppk`**；需自行转换或生成 OpenSSH 格式密钥 |
+| 密钥路径习惯 | 配置中 `key_path` 按 Unix 习惯处理 `~` 展开，**暂不支持** `%USERPROFILE%` 等 Windows 路径写法 |
+| 无系统集成 | 不读取 Windows 凭据管理器，不导入 `%USERPROFILE%\.ssh\config` |
+| 文档与截图 | README 截图和安装示例以 macOS 为主，Windows 专属说明较少 |
+
+**Windows 使用建议：**
+
+- 使用 [Windows Terminal](https://github.com/microsoft/terminal)，避免老版 cmd
+- 私钥使用 OpenSSH 格式（可通过 PuTTYgen 导出，或 `ssh-keygen` 生成）
+- 遇到问题可先查看 [Issues](https://github.com/ha1377311454/sterm/issues)
+
+### 欢迎 Windows 适配贡献
+
+如果你熟悉 Windows 平台，愿意帮助改进 sterm 在 Windows 上的体验，**非常欢迎**！以下是一些有价值的方向：
+
+- SSH 会话窗口 resize 适配（Windows 控制台 API）
+- 支持 `.ppk` 密钥或 `%USERPROFILE%` 路径
+- 导入 OpenSSH for Windows 的 `~/.ssh/config`
+- Windows 安装文档、截图和安装包（如 Scoop / winget）
+- 在 Windows Terminal 下的快捷键与兼容性测试
+
+欢迎直接提 [Issue](https://github.com/ha1377311454/sterm/issues) 讨论，或提交 Pull Request。
+
 ---
 
 ## Usage / 使用方法
