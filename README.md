@@ -22,11 +22,31 @@
 
 ---
 
-## Screenshot / 截图
+## Screenshots / 截图
 
-> Add a terminal screenshot or GIF here before publishing.
->
-> 发布前请在此添加终端截图或 GIF 演示。
+### Host list / 主机列表
+
+Teal theme / Teal 主题：
+
+![Host list — teal theme](docs/screenshots/hosts-teal.png)
+
+Catppuccin theme / Catppuccin 主题：
+
+![Host list — catppuccin theme](docs/screenshots/hosts-catppuccin.png)
+
+### Add / edit host / 添加与编辑主机
+
+![Add host form](docs/screenshots/add-host.png)
+
+### Theme selector / 主题选择
+
+![Theme selector](docs/screenshots/theme-selector.png)
+
+### SFTP file transfer / SFTP 文件传输
+
+Dual-pane browser with upload progress / 双栏浏览器与上传进度：
+
+![SFTP upload](docs/screenshots/sftp-upload.png)
 
 ---
 
