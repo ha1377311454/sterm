@@ -11,7 +11,7 @@ import (
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 
-	"github.com/helianthus/sterm/internal/ssh"
+	"github.com/ha1377311454/sterm/internal/ssh"
 )
 
 // SFTPView 是双栏文件浏览器：本地（左）↔ 远程（右）。

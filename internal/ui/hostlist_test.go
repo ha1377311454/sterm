@@ -6,7 +6,7 @@ import (
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 
-	"github.com/helianthus/sterm/internal/config"
+	"github.com/ha1377311454/sterm/internal/config"
 )
 
 func TestHostFilterUsesSubstringMatch(t *testing.T) {

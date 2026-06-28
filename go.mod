@@ -1,4 +1,4 @@
-module github.com/helianthus/sterm
+module github.com/ha1377311454/sterm
 
 go 1.21
 

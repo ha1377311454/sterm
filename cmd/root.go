@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/helianthus/sterm/internal/config"
-	"github.com/helianthus/sterm/internal/ui"
+	"github.com/ha1377311454/sterm/internal/config"
+	"github.com/ha1377311454/sterm/internal/ui"
 	"github.com/spf13/cobra"
 )
 
