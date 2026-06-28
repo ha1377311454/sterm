@@ -7,6 +7,8 @@
 
 **中文** | 终端 SSH 连接管理器，支持 SFTP 文件传输、密码加密存储和可定制主题。
 
+**sterm** — **S**SH **Term**inal，一个在终端中运行的 SSH 连接与 SFTP 管理工具。
+
 ---
 
 ## Why sterm / 为什么选择 sterm
@@ -23,6 +25,62 @@
 > Built with `CGO_ENABLED=0` for a portable, self-contained executable across macOS, Linux, and Windows.
 >
 > 采用 `CGO_ENABLED=0` 构建，在 macOS、Linux、Windows 上均可独立运行，无需额外安装库。
+
+---
+
+## Positioning / 产品定位
+
+### sterm 是什么，不是什么
+
+**sterm 是 SSH 工作台，不是终端模拟器。**
+
+它运行在 iTerm2、Terminal.app、Windows Terminal、Linux 终端等**已有终端**里面，负责帮你管理远程主机：维护主机列表、发起 SSH 连接、浏览和传输 SFTP 文件、加密保存密码。它不会替代 iTerm2 去提供窗口、标签页、分屏或本地 Shell 环境——那些是终端模拟器该做的事。
+
+可以这么理解两者的关系：
+
+```
+iTerm2（终端）          →  提供窗口和本地 Shell 环境
+  └─ sterm（SSH 工作台） →  管「连哪台机器、用什么账号、文件怎么传」
+       └─ Enter 连接后   →  进入远程 Shell，仍在这个窗口里
+```
+
+### 和 iTerm2 等终端工具的区别
+
+| 维度 | iTerm2 / Windows Terminal / WezTerm | sterm |
+|------|---------------------------------------|-------|
+| 核心职责 | 终端模拟：开窗口、标签、分屏、渲染字符 | SSH 管理：主机库、连接、SFTP、加密配置 |
+| 本地 Shell | 原生支持 bash / zsh 等 | 不提供，专注远程连接 |
+| 主机管理 | 需自行维护 Profile 或 `~/.ssh/config` | 内置可视化列表，支持增删改查和 `/` 搜索 |
+| 文件传输 | 需另用 scp、rsync 或 FileZilla 等 | 内置双栏 SFTP 浏览器，按 `f` 即可打开 |
+| 密码存储 | 通常依赖 ssh-agent、密钥或手动输入 | AES-GCM 加密写入本地 config，可备份同步 |
+| 跨平台 | 各终端 UI 和配置方式不同 | 同一套 TUI 操作和 YAML 配置，macOS / Linux / Windows 一致 |
+
+**English summary:** iTerm2 answers *"how do I interact with a terminal?"* — sterm answers *"which server do I connect to, with what credentials, and how do I transfer files?"*
+
+### 为什么 iTerm2 用户还需要 sterm？
+
+iTerm2 是出色的终端，但**不擅长充当 SSH 运维中枢**。当你需要频繁连接多台服务器时，往往会遇到这些痛点：
+
+1. **主机多了就难管。** Profile 或 `~/.ssh/config` 条目一多，查找和维护成本上升。sterm 把主机集中成一张可搜索的列表，带标签和备注，在 TUI 里直接增删改。
+2. **传文件要换工具。** iTerm2 本身不带 SFTP 界面，通常要另开命令行或图形客户端。sterm 按 `f` 进入双栏 SFTP，上传下载不离开终端。
+3. **连接信息分散。** 哪些机器用密钥、哪些用密码、密码存在哪——iTerm2 不会帮你统一管理。sterm 把连接信息收进一份 YAML，密码加密落盘，备份一份 config 即可迁移。
+4. **跨环境习惯不统一。** iTerm2 仅限 macOS；在 Linux 服务器或 Windows 上没有同一套 SSH 管理体验。sterm 是单二进制跨平台工具，你在 macOS 的 iTerm2 里用它，在远程 Linux 上也可以直接跑，操作一致。
+5. **不想用重量级方案。** Termius 等工具功能全，但依赖 Electron 或云端账号。sterm 约 8 MB、无后台驻留、配置全在本地、开源可审计——适合不想把服务器密码交给第三方的人。
+
+**sterm 不是 iTerm2 的竞品，而是跑在 iTerm2 里的 SSH 工作台。** 你继续用 iTerm2 获得最好的终端体验，用 sterm 补上「连谁、怎么连、文件怎么传」这一层。
+
+### 谁适合用，谁不需要
+
+**适合：**
+- 经常 SSH 多台服务器的开发者或运维
+- 已在用 iTerm2 / WezTerm，但 Profile 或 ssh config 维护成本高
+- 需要在终端里快速完成 SFTP 传文件
+- 想要轻量、本地、开源的 SSH 管理器
+
+**不需要：**
+- 只连一两台机器，直接 `ssh my-server` 就够
+- 主要需求是终端分屏、tmux 集成、本地开发环境美化
+- 想要独立 GUI 窗口、完全不依赖任何终端应用
 
 ---
 
