@@ -9,6 +9,23 @@
 
 ---
 
+## Why sterm / 为什么选择 sterm
+
+| | English | 中文 |
+|---|---------|------|
+| 📦 | **~8 MB** single static binary — no runtime dependencies | **约 8 MB** 单一静态二进制，无运行时依赖 |
+| ⚡ | **Instant startup** — native Go TUI, no Electron or browser engine | **即开即用** — 原生 Go 终端界面，无 Electron / 浏览器内核 |
+| 🪶 | **Low memory footprint** — idle RAM typically **~10–20 MB**; only active SSH/SFTP sessions consume more | **内存占用低** — 空闲时通常 **~10–20 MB**；仅在连接 SSH/SFTP 时额外占用 |
+| 🔋 | **No background daemon** — runs only when you launch it, zero idle CPU | **无后台驻留** — 仅在启动时运行，空闲零 CPU |
+| 🗂️ | **Plain YAML config** — human-readable, easy to back up and sync | **纯 YAML 配置** — 可读易编辑，方便备份与同步 |
+| 🧩 | **All-in-one** — host management, SSH, SFTP, and themes in one tool | **功能一体** — 主机管理、SSH 连接、SFTP 传输、主题切换，一个工具搞定 |
+
+> Built with `CGO_ENABLED=0` for a portable, self-contained executable across macOS, Linux, and Windows.
+>
+> 采用 `CGO_ENABLED=0` 构建，在 macOS、Linux、Windows 上均可独立运行，无需额外安装库。
+
+---
+
 ## Features / 功能特性
 
 | | English | 中文 |

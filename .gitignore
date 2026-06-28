@@ -27,3 +27,4 @@ Thumbs.db
 # 本地环境 / 密钥
 .env
 .env.*
+/docs/RELEASE.md
