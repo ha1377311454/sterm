@@ -1,0 +1,29 @@
+# 构建产物
+/sterm
+/sterm.exe
+/dist/
+
+# 测试与覆盖率
+*.test
+*.out
+coverage.txt
+coverage.html
+
+# Go workspace
+go.work
+go.work.sum
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 本地环境 / 密钥
+.env
+.env.*
