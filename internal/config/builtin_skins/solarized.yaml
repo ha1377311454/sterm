@@ -1,0 +1,33 @@
+body:
+  fgColor: "#839496"
+  bgColor: "#002b36"
+frame:
+  border:
+    fgColor:    "#073642"
+    focusColor: "#2aa198"
+  title:
+    fgColor: "#268bd2"
+table:
+  fgColor:       "#839496"
+  bgColor:       "#002b36"
+  cursorFgColor: "#002b36"
+  cursorBgColor: "#2aa198"
+  header:
+    fgColor: "#268bd2"
+    bgColor: "#002b36"
+prompt:
+  fgColor:     "#93a1a1"
+  bgColor:     "#073642"
+  filterColor: "#b58900"
+status:
+  fgColor:  "#586e75"
+  bgColor:  "#002b36"
+  okColor:  "#859900"
+  errColor: "#dc322f"
+form:
+  fgColor:       "#839496"
+  bgColor:       "#002b36"
+  fieldFgColor:  "#eee8d5"
+  fieldBgColor:  "#002b36"
+  buttonFgColor: "#002b36"
+  buttonBgColor: "#268bd2"
