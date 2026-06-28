@@ -118,7 +118,7 @@ func (hf *HostForm) Draw(screen tcell.Screen) {
 		}
 	}
 	drawBorder(screen, x, y, width, height, borderStyle)
-	tview.Print(screen, hf.title+"  (Esc/q: cancel)", x+2, y, width-4, tview.AlignCenter, title)
+	tview.Print(screen, hf.title+"  (Esc: cancel)", x+2, y, width-4, tview.AlignCenter, title)
 
 	labelX := x + 3
 	valueX := x + 16

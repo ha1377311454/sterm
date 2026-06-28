@@ -41,13 +41,23 @@ func TestHostFormGlobalCancelDoesNotBlock(t *testing.T) {
 	app.stack.AddAndSwitchToPage("modal", modalLayout(hf, 64, 24), true)
 
 	runKey(t, func() {
-		if event := app.onGlobalKey(tcell.NewEventKey(tcell.KeyRune, 'q', tcell.ModNone)); event != nil {
-			t.Fatalf("expected q to be consumed")
+		if event := app.onGlobalKey(tcell.NewEventKey(tcell.KeyRune, 'q', tcell.ModNone)); event == nil {
+			t.Fatal("expected q to pass through to the form")
+		}
+	})
+
+	if !app.stack.HasPage("modal") {
+		t.Fatal("expected modal to stay open when q is pressed")
+	}
+
+	runKey(t, func() {
+		if event := app.onGlobalKey(tcell.NewEventKey(tcell.KeyEscape, 0, tcell.ModNone)); event != nil {
+			t.Fatal("expected Esc to be consumed")
 		}
 	})
 
 	if app.stack.HasPage("modal") {
-		t.Fatal("expected modal to be closed")
+		t.Fatal("expected modal to be closed by Esc")
 	}
 }
 

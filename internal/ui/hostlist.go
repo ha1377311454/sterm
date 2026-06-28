@@ -6,7 +6,8 @@ import (
 
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
-	"github.com/sahilm/fuzzy"
+
+	"github.com/helianthus/sterm/internal/config"
 )
 
 // HostList 是主主机列表视图：可筛选的表格。
@@ -146,32 +147,14 @@ func (hl *HostList) doDelete() {
 		return
 	}
 	name := hl.app.cfg.Connections[idx].Name
-	modal := tview.NewModal().
-		SetText(fmt.Sprintf("Delete [yellow]%s[-]?", name)).
-		AddButtons([]string{"Delete", "Cancel"}).
-		SetDoneFunc(func(_ int, btnLabel string) {
-			hl.app.pages.RemovePage("confirm")
-			hl.app.pages.SwitchToPage("hostlist")
-			hl.app.tv.SetFocus(hl.table)
-			if isDeleteConfirm(btnLabel) {
-				hl.app.cfg.DeleteHost(idx)
-				_ = hl.app.cfg.Save()
-				hl.Reload()
-				hl.app.SetStatus(fmt.Sprintf("Deleted: %s", name), false)
-			}
-		})
-	modal.SetBackgroundColor(hl.app.styles.Form().BgColor.Color())
-	modal.SetTextColor(hl.app.styles.Form().FgColor.Color())
-	modal.SetButtonBackgroundColor(hl.app.styles.Form().ButtonBgColor.Color())
-	modal.SetButtonTextColor(hl.app.styles.Form().ButtonFgColor.Color())
-	modal.SetFocus(1)
-	hl.app.pages.AddPage("confirm", modal, true, true)
-	hl.app.pages.SwitchToPage("confirm")
-	hl.app.tv.SetFocus(modal)
-}
+	deleteIdx := idx
 
-func isDeleteConfirm(btnLabel string) bool {
-	return btnLabel == "Delete"
+	dlg := NewConfirmDialog(hl.app,
+		fmt.Sprintf("Delete %s?", name),
+		func() { hl.app.deleteHostAt(deleteIdx) },
+	)
+	hl.app.stack.AddAndSwitchToPage("confirm", modalLayout(dlg, 44, 7), true)
+	hl.app.tv.SetFocus(dlg)
 }
 
 func (hl *HostList) doSFTP() {
@@ -204,16 +187,30 @@ func (hl *HostList) buildFiltered() {
 		}
 		return
 	}
-	// 对每个主机合并字符串进行模糊匹配
-	sources := make([]string, len(all))
+	// 在各字段中做不区分大小写的子串匹配
+	query := strings.ToLower(strings.TrimSpace(hl.query))
+	hl.filtered = hl.filtered[:0]
 	for i, h := range all {
-		sources[i] = strings.Join([]string{h.Name, h.Host, h.User, h.TagsStr(), h.Description}, " ")
+		if hostMatchesQuery(h, query) {
+			hl.filtered = append(hl.filtered, i)
+		}
 	}
-	matches := fuzzy.Find(hl.query, sources)
-	hl.filtered = make([]int, len(matches))
-	for i, m := range matches {
-		hl.filtered[i] = m.Index
+}
+
+// hostMatchesQuery 判断主机是否在任一字段中包含 query（不区分大小写）。
+func hostMatchesQuery(h config.Host, query string) bool {
+	if query == "" {
+		return true
 	}
+	for _, s := range []string{
+		h.Name, h.Host, h.User, h.TagsStr(), h.Description,
+		fmt.Sprintf("%d", h.Port),
+	} {
+		if strings.Contains(strings.ToLower(s), query) {
+			return true
+		}
+	}
+	return false
 }
 
 func (hl *HostList) renderTable() {

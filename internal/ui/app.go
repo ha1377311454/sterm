@@ -119,18 +119,20 @@ func applyTviewStyles(st *config.Styles) {
 }
 
 func (a *App) onGlobalKey(event *tcell.EventKey) *tcell.EventKey {
-	// 根级模态框（添加/编辑主机表单）。
+	// 根级模态框（添加/编辑主机表单）。仅 Esc 可取消，避免与字段中的 q 冲突。
 	if a.stack.HasPage("modal") {
-		switch event.Key() {
-		case tcell.KeyEscape:
+		if event.Key() == tcell.KeyEscape {
 			a.closeFormModal()
 			return nil
-		case tcell.KeyRune:
-			switch event.Rune() {
-			case 'q', 'Q':
-				a.closeFormModal()
-				return nil
-			}
+		}
+		return event
+	}
+
+	// 删除确认框，Enter 由 ConfirmDialog 自己处理。
+	if a.stack.HasPage("confirm") {
+		if event.Key() == tcell.KeyEscape {
+			a.closeConfirm()
+			return nil
 		}
 		return event
 	}
@@ -141,9 +143,6 @@ func (a *App) onGlobalKey(event *tcell.EventKey) *tcell.EventKey {
 		switch front {
 		case "theme":
 			a.CloseModal("theme")
-			return nil
-		case "confirm":
-			a.closeConfirm()
 			return nil
 		}
 	}
@@ -266,12 +265,30 @@ func (a *App) CloseModal(name string) {
 }
 
 func (a *App) closeConfirm() {
-	if a.pages.HasPage("confirm") {
-		a.pages.RemovePage("confirm")
+	if a.stack.HasPage("confirm") {
+		a.stack.RemovePage("confirm")
 	}
-	a.pages.SwitchToPage("hostlist")
+	a.stack.SwitchToPage("main")
 	a.tv.SetFocus(a.hostList.table)
 	a.tv.ForceDraw()
+}
+
+func (a *App) deleteHostAt(idx int) {
+	if idx < 0 || idx >= len(a.cfg.Connections) {
+		a.closeConfirm()
+		return
+	}
+	name := a.cfg.Connections[idx].Name
+	a.cfg.DeleteHost(idx)
+	if err := a.cfg.Save(); err != nil {
+		a.hostList.Reload()
+		a.closeConfirm()
+		a.SetStatus(fmt.Sprintf("Delete error: %v", err), true)
+		return
+	}
+	a.hostList.Reload()
+	a.closeConfirm()
+	a.SetStatus(fmt.Sprintf("Deleted: %s", name), false)
 }
 
 func (a *App) showThemeSelector() {
